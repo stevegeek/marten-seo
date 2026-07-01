@@ -11,3 +11,4 @@ module Marten
 end
 
 # --- component requires (appended task-by-task) ---
+require "./marten_seo/config"
