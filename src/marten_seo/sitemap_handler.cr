@@ -62,9 +62,9 @@ module Marten
             io << Escaping.escape_html(default_url)
             io << %("/>\n)
           end
-          io << "    <lastmod>" << Escaping.escape_html(lastmod.not_nil!) << "</lastmod>\n" if lastmod
+          io << "    <lastmod>" << Escaping.escape_html(lastmod) << "</lastmod>\n" if lastmod
           io << "    <changefreq>" << Escaping.escape_html(changefreq) << "</changefreq>\n"
-          io << "    <priority>" << priority.to_s << "</priority>\n"
+          io << "    <priority>" << Escaping.escape_html(priority.to_s) << "</priority>\n"
           io << "  </url>\n"
         end
       end

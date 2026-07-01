@@ -33,7 +33,6 @@ describe Marten::SEO::RobotsHandler do
       c.robots_disallow = [] of String
     end
     body = Marten::Spec.client.get("/robots.txt").content
-    body.should contain("Sitemap: ")
-    body.should contain("/sitemap.xml")
+    body.should match(/Sitemap: https?:\/\/[^\/\s]+\/sitemap\.xml/)
   end
 end

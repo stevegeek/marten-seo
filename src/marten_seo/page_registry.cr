@@ -1,3 +1,5 @@
+require "marten"
+
 module Marten
   module SEO
     # One indexable URL for the sitemap. `params` are passed to `reverse` to build

@@ -1,6 +1,8 @@
 require "marten"
 require "json"
+require "./config"
 require "./escaping"
+require "./page_meta"
 
 module Marten
   module SEO

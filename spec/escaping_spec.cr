@@ -7,6 +7,16 @@ describe Marten::SEO::Escaping do
         .should eq("\\u003cscript\\u003e\\u0026\\u003c/script\\u003e")
     end
 
+    it "escapes U+2028 LINE SEPARATOR to \\u2028" do
+      Marten::SEO::Escaping.escape_json("before\u{2028}after")
+        .should eq("before\\u2028after")
+    end
+
+    it "escapes U+2029 PARAGRAPH SEPARATOR to \\u2029" do
+      Marten::SEO::Escaping.escape_json("before\u{2029}after")
+        .should eq("before\\u2029after")
+    end
+
     it "leaves ordinary JSON characters untouched" do
       input = %({"key":"value","n":42})
       Marten::SEO::Escaping.escape_json(input).should eq(input)

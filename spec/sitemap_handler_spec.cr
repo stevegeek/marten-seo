@@ -23,6 +23,7 @@ describe Marten::SEO::SitemapHandler do
     # prefix_default_locale: false — English is /about (no prefix), Italian is /it/about
     body.should contain("<loc>https://acme.test/it/about</loc>")
     body.should contain("<loc>https://acme.test/about</loc>")
+    body.should contain(%(<xhtml:link rel="alternate" hreflang="en" href="https://acme.test/about"/>))
     body.should contain(%(<xhtml:link rel="alternate" hreflang="it" href="https://acme.test/it/about"/>))
     # x-default points at the default-locale (en) URL
     body.should contain(%(<xhtml:link rel="alternate" hreflang="x-default" href="https://acme.test/about"/>))

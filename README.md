@@ -107,6 +107,18 @@ Marten::SEO.alternate_urls("about")
 > ensure the `routes.about` key exists in every locale file — `reverse` will
 > raise for a locale that lacks the translation.
 
+## Security
+
+JSON-LD blobs emitted inside `<script type="application/ld+json">` are passed
+through `Marten::SEO::Escaping.escape_json` before output. This replaces `<`,
+`>`, `&`, U+2028, and U+2029 with their `\uXXXX` JSON string escapes, which
+prevents `</script>` / `<!--<script>` breakout and mXSS via Unicode line/paragraph
+separators while keeping the JSON valid. The implementation mirrors
+`ERB::Util.json_escape` from Rails and is ported from a prior implementation's `Escaping` module.
+
+HTML attribute values and text content (canonical URLs, title, description, etc.)
+are escaped with `HTML.escape` via `Marten::SEO::Escaping.escape_html`.
+
 ## Development
 
 ```bash
