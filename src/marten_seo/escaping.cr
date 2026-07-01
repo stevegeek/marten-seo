@@ -1,5 +1,4 @@
 require "html"
-require "uri"
 
 module Marten
   module SEO
@@ -29,14 +28,6 @@ module Marten
       # and text content. Crystal stdlib equivalent of Ruby's CGI.escapeHTML.
       def escape_html(text : String) : String
         HTML.escape(text)
-      end
-
-      # Percent-encodes *value* as a URI path component (RFC 3986).
-      # Delegates to Crystal stdlib `URI.encode_path` — not hand-rolled.
-      # Use this to sanitize user-supplied strings before embedding them in
-      # `mailto:` URIs or other URI value positions (e.g. iCal CALADDRESS).
-      def escape_uri(value : String) : String
-        URI.encode_path(value)
       end
     end
   end
