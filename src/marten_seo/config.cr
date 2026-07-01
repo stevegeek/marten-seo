@@ -27,6 +27,10 @@ module Marten
       @@config
     end
 
+    def self.config=(config : Config) : Config
+      @@config = config
+    end
+
     def self.configure(&) : Nil
       yield @@config
     end

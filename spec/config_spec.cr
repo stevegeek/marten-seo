@@ -1,6 +1,15 @@
 require "./spec_helper"
 
 describe Marten::SEO::Config do
+  # Swap in a fresh config before each example and restore the original
+  # afterward so mutations to the process-global singleton don't bleed.
+  around_each do |example|
+    original = Marten::SEO.config
+    Marten::SEO.config = Marten::SEO::Config.new
+    example.run
+    Marten::SEO.config = original
+  end
+
   it "ships sane defaults" do
     config = Marten::SEO::Config.new
     config.default_robots.should eq("index,follow")
