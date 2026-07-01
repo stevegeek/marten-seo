@@ -1,0 +1,20 @@
+name: marten_seo
+version: 0.1.0
+
+authors:
+  - Stephen Ierodiaconou <stevegeek@gmail.com>
+
+crystal: '>= 1.20.1'
+
+license: MIT
+
+dependencies:
+  marten:
+    github: martenframework/marten
+
+development_dependencies:
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+  blueprint:
+    github: stephannv/blueprint
+    version: ~> 1.1
