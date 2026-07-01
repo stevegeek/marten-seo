@@ -12,3 +12,4 @@ end
 
 # --- component requires (appended task-by-task) ---
 require "./marten_seo/config"
+require "./marten_seo/page_meta"
