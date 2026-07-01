@@ -1,6 +1,6 @@
 require "marten"
 require "json"
-require "html"
+require "./escaping"
 
 module Marten
   module SEO
@@ -17,7 +17,7 @@ module Marten
 
       def render_to(io : IO) : Nil
         if title = @meta.title
-          io << "<title>" << HTML.escape(title) << "</title>\n"
+          io << "<title>" << Escaping.escape_html(title) << "</title>\n"
         end
         meta_tag(io, "description", @meta.description)
 
@@ -25,7 +25,7 @@ module Marten
         meta_tag(io, "robots", robots) unless robots.empty?
 
         if canonical = @meta.canonical
-          io << %(<link rel="canonical" href=") << HTML.escape(canonical) << %("/>\n)
+          io << %(<link rel="canonical" href=") << Escaping.escape_html(canonical) << %("/>\n)
         end
 
         render_open_graph(io)
@@ -51,35 +51,24 @@ module Marten
         meta_tag(io, "twitter:image", tw.image || @meta.og.image || @config.default_og_image)
       end
 
-      # Characters that can break out of or corrupt a <script> data context.
-      # Escaping to HTML entities is valid inside JSON string values and kills
-      # </script>, <!--, and <script vectors as well as mXSS via U+2028/U+2029.
-      SCRIPT_UNSAFE = {
-        '<'      => "&lt;",
-        '>'      => "&gt;",
-        '&'      => "&amp;",
-        ' ' => "&#x2028;",
-        ' ' => "&#x2029;",
-      }
-
       private def render_json_ld(io : IO) : Nil
         @meta.json_ld.each do |node|
           json = node.is_a?(String) ? node : node.to_json
           io << %(<script type="application/ld+json">)
-          # Escape characters that could break out of the <script> context.
-          io << json.gsub(SCRIPT_UNSAFE)
+          # Escape chars that could break out of the <script> context.
+          io << Escaping.escape_json(json)
           io << "</script>\n"
         end
       end
 
       private def meta_tag(io : IO, name : String, content : String?) : Nil
         return if content.nil?
-        io << %(<meta name=") << name << %(" content=") << HTML.escape(content) << %("/>\n)
+        io << %(<meta name=") << name << %(" content=") << Escaping.escape_html(content) << %("/>\n)
       end
 
       private def property_tag(io : IO, property : String, content : String?) : Nil
         return if content.nil?
-        io << %(<meta property=") << property << %(" content=") << HTML.escape(content) << %("/>\n)
+        io << %(<meta property=") << property << %(" content=") << Escaping.escape_html(content) << %("/>\n)
       end
     end
   end

@@ -36,14 +36,14 @@ describe Marten::SEO::HeadTags do
     html.should contain(%(<meta name="twitter:title" content="T"/>))
   end
 
-  it "emits json_ld and neutralizes script-injection sequences via entity escaping" do
+  it "emits json_ld and neutralizes script-injection sequences via unicode escaping" do
     meta = Marten::SEO::PageMeta.new
     meta.json_ld << %({"@type":"Org","x":"</script>"})
     html = Marten::SEO::HeadTags.new(meta).render_to_s
 
     html.should contain(%(<script type="application/ld+json">))
-    html.should contain(%("x":"&lt;/script&gt;"))    # < and > entity-escaped in payload
-    html.should contain("</script>\n")                # our own closing tag intact
+    html.should contain(%("x":"\\u003c/script\\u003e"))  # < and > \uXXXX-escaped in payload
+    html.should contain("</script>\n")                    # our own closing tag intact
   end
 
   it "neutralizes mXSS vectors in json_ld (<!-- and <script sequences)" do
@@ -51,7 +51,7 @@ describe Marten::SEO::HeadTags do
     meta.json_ld << %({"xss":"<!--<script>alert(1)</script>"})
     html = Marten::SEO::HeadTags.new(meta).render_to_s
 
-    html.should contain("&lt;!--&lt;script&gt;")     # mXSS sequence entity-escaped
-    html.should_not contain("<!--<script>")            # no literal mXSS payload
+    html.should contain("\\u003c!--\\u003cscript\\u003e")  # mXSS sequence \uXXXX-escaped
+    html.should_not contain("<!--<script>")                  # no literal mXSS payload
   end
 end

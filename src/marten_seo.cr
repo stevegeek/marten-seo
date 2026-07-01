@@ -13,4 +13,5 @@ end
 # --- component requires (appended task-by-task) ---
 require "./marten_seo/config"
 require "./marten_seo/page_meta"
+require "./marten_seo/escaping"
 require "./marten_seo/head_tags"
