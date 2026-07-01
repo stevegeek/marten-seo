@@ -25,3 +25,7 @@ shards:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
     version: 0.23.0
 
+  web_escape: # Overridden
+    path: ../web-escape
+    version: 0.1.0
+

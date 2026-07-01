@@ -114,10 +114,12 @@ through `Marten::SEO::Escaping.escape_json` before output. This replaces `<`,
 `>`, `&`, U+2028, and U+2029 with their `\uXXXX` JSON string escapes, which
 prevents `</script>` / `<!--<script>` breakout and mXSS via Unicode line/paragraph
 separators while keeping the JSON valid. The implementation mirrors
-`ERB::Util.json_escape` from Rails and is ported from a prior implementation's `Escaping` module.
+`ERB::Util.json_escape` from Rails. Escaping is provided by the shared
+[`web-escape`](https://github.com/stevegeek/web-escape) shard (`WebEscape`),
+matching ERB::Util.json_escape semantics, with identical byte-level guarantees.
 
 HTML attribute values and text content (canonical URLs, title, description, etc.)
-are escaped with `HTML.escape` via `Marten::SEO::Escaping.escape_html`.
+are escaped with `WebEscape.escape_html` via `Marten::SEO::Escaping.escape_html`.
 
 ## Development
 

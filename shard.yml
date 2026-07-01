@@ -11,6 +11,8 @@ license: MIT
 dependencies:
   marten:
     github: martenframework/marten
+  web_escape:
+    github: stevegeek/web-escape
 
 development_dependencies:
   sqlite3:
