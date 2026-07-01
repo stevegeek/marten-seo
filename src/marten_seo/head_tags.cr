@@ -51,12 +51,23 @@ module Marten
         meta_tag(io, "twitter:image", tw.image || @meta.og.image || @config.default_og_image)
       end
 
+      # Characters that can break out of or corrupt a <script> data context.
+      # Escaping to HTML entities is valid inside JSON string values and kills
+      # </script>, <!--, and <script vectors as well as mXSS via U+2028/U+2029.
+      SCRIPT_UNSAFE = {
+        '<'      => "&lt;",
+        '>'      => "&gt;",
+        '&'      => "&amp;",
+        ' ' => "&#x2028;",
+        ' ' => "&#x2029;",
+      }
+
       private def render_json_ld(io : IO) : Nil
         @meta.json_ld.each do |node|
           json = node.is_a?(String) ? node : node.to_json
           io << %(<script type="application/ld+json">)
-          # Prevent the embedded JSON from terminating the <script> element early.
-          io << json.gsub("</", "<\\/")
+          # Escape characters that could break out of the <script> context.
+          io << json.gsub(SCRIPT_UNSAFE)
           io << "</script>\n"
         end
       end
