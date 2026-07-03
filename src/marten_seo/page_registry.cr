@@ -10,6 +10,9 @@ module Marten
       getter changefreq : String
       getter priority : Float64
       getter lastmod : String?
+      # When set, the sitemap emits this entry only for these locales (and
+      # omits x-default unless the default locale is among them). Nil = all.
+      getter locales : Array(String)?
 
       def initialize(
         @route_name : String,
@@ -17,6 +20,7 @@ module Marten
         @changefreq : String = "weekly",
         @priority : Float64 = 0.5,
         @lastmod : String? = nil,
+        @locales : Array(String)? = nil,
       )
       end
     end
@@ -36,8 +40,9 @@ module Marten
         changefreq : String = "weekly",
         lastmod : String? = nil,
         params : Hash(String, String) = {} of String => String,
+        locales : Array(String)? = nil,
       ) : Nil
-        @@static << SitemapEntry.new(route_name, params, changefreq, priority, lastmod)
+        @@static << SitemapEntry.new(route_name, params, changefreq, priority, lastmod, locales)
       end
 
       def register_dynamic(&block : -> Array(SitemapEntry)) : Nil

@@ -51,4 +51,28 @@ describe Marten::SEO::SitemapHandler do
     # Bad entry is silently dropped — no crash, no loc for the missing route
     body.should_not contain("no_such_route_xyz")
   end
+
+  it "restricts an entry to its declared locales" do
+    Marten::SEO::PageRegistry.register("about", locales: ["en"])
+
+    body = Marten::Spec.client.get("/sitemap.xml").content
+
+    body.should contain("<loc>https://acme.test/about</loc>")
+    body.should_not contain("<loc>https://acme.test/it/about</loc>")
+    body.should_not contain(%(hreflang="it"))
+    # en is the default locale, so x-default is still present and points at it
+    body.should contain(%(<xhtml:link rel="alternate" hreflang="x-default" href="https://acme.test/about"/>))
+  end
+
+  it "omits x-default when the default locale is excluded, and supports dynamic entries" do
+    Marten::SEO::PageRegistry.register_dynamic do
+      [Marten::SEO::SitemapEntry.new("about", locales: ["it"])]
+    end
+
+    body = Marten::Spec.client.get("/sitemap.xml").content
+
+    body.should contain("<loc>https://acme.test/it/about</loc>")
+    body.should_not contain("<loc>https://acme.test/about</loc>")
+    body.should_not contain("x-default")
+  end
 end

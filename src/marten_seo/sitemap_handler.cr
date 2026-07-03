@@ -28,6 +28,10 @@ module Marten
           Marten::SEO::PageRegistry.entries.each do |entry|
             begin
               urls = Marten::SEO.alternate_urls(entry.route_name, entry.params, base)
+              if entry_locales = entry.locales
+                urls = urls.select { |locale, _| entry_locales.includes?(locale) }
+              end
+              next if urls.empty?
               emit_url_set(io, urls, entry.changefreq, entry.priority, entry.lastmod)
             rescue Marten::Routing::Errors::NoReverseMatch
               next
