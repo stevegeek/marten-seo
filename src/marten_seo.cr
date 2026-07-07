@@ -6,7 +6,7 @@ require "html"
 # alternate-URL helper for Marten sites. Runtime dependency: marten only.
 module Marten
   module SEO
-    VERSION = "0.1.1"
+    VERSION = "0.1.2"
   end
 end
 

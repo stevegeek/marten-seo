@@ -2,7 +2,7 @@ require "./spec_helper"
 
 describe Marten::SEO do
   it "exposes a version constant" do
-    Marten::SEO::VERSION.should eq("0.1.1")
+    Marten::SEO::VERSION.should eq("0.1.2")
   end
 
   it "boots the test project (PlainHandler responds)" do
