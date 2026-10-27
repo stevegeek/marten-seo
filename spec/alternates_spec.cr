@@ -11,7 +11,7 @@ describe "Marten::SEO.alternate_urls" do
 
   it "maps every available locale to an absolute URL (kwargs form)" do
     urls = Marten::SEO.alternate_urls("about", base_url: "https://acme.test")
-    urls.keys.sort.should eq(["en", "it"])
+    urls.keys.sort!.should eq(["en", "it"])
     # prefix_default_locale: false — default locale (en) is unprefixed, non-default (it) gets /it/.
     urls["en"].should eq("https://acme.test/about")
     urls["it"].should eq("https://acme.test/it/about")
@@ -23,7 +23,7 @@ describe "Marten::SEO.alternate_urls" do
   end
 
   it "falls back to the configured base_url" do
-    Marten::SEO.configure { |c| c.base_url = "https://configured.test" }
+    Marten::SEO.configure(&.base_url=("https://configured.test"))
     urls = Marten::SEO.alternate_urls("home")
     # Default locale path is "/" (no prefix) → origin + "/" = one trailing slash.
     urls["en"].should eq("https://configured.test/")
