@@ -5,7 +5,7 @@ describe Marten::SEO::SitemapHandler do
     Marten::SEO::PageRegistry.clear
     original_config = Marten::SEO.config
     Marten::SEO.config = Marten::SEO::Config.new
-    Marten::SEO.configure { |c| c.base_url = "https://acme.test" }
+    Marten::SEO.configure(&.base_url=("https://acme.test"))
     example.run
     Marten::SEO.config = original_config
     Marten::SEO::PageRegistry.clear

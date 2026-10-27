@@ -9,11 +9,11 @@ describe Marten::SEO::RobotsHandler do
   end
 
   it "emits configured rules and a sitemap line from base_url" do
-    Marten::SEO.configure do |c|
-      c.robots_user_agent = "*"
-      c.robots_allow = ["/"]
-      c.robots_disallow = ["/admin"]
-      c.base_url = "https://acme.test"
+    Marten::SEO.configure do |config|
+      config.robots_user_agent = "*"
+      config.robots_allow = ["/"]
+      config.robots_disallow = ["/admin"]
+      config.base_url = "https://acme.test"
     end
 
     response = Marten::Spec.client.get("/robots.txt")
@@ -28,9 +28,9 @@ describe Marten::SEO::RobotsHandler do
   end
 
   it "derives the sitemap host from the request when base_url is empty" do
-    Marten::SEO.configure do |c|
-      c.base_url = ""
-      c.robots_disallow = [] of String
+    Marten::SEO.configure do |config|
+      config.base_url = ""
+      config.robots_disallow = [] of String
     end
     body = Marten::Spec.client.get("/robots.txt").content
     body.should match(/Sitemap: https?:\/\/[^\/\s]+\/sitemap\.xml/)

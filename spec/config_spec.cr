@@ -19,10 +19,10 @@ describe Marten::SEO::Config do
   end
 
   it "is mutated through Marten::SEO.configure and read via Marten::SEO.config" do
-    Marten::SEO.configure do |c|
-      c.site_name = "Acme"
-      c.default_og_image = "https://acme.test/og.png"
-      c.base_url = "https://acme.test/"
+    Marten::SEO.configure do |config|
+      config.site_name = "Acme"
+      config.default_og_image = "https://acme.test/og.png"
+      config.base_url = "https://acme.test/"
     end
 
     Marten::SEO.config.site_name.should eq("Acme")
