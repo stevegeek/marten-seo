@@ -1,6 +1,9 @@
-# NOTICE: This lockfile contains some overrides from shard.override.yml
 version: 2.0
 shards:
+  ameba:
+    git: https://github.com/crystal-ameba/ameba.git
+    version: 1.7.0
+
   blueprint:
     git: https://github.com/stephannv/blueprint.git
     version: 1.1.0
@@ -13,8 +16,8 @@ shards:
     git: https://github.com/crystal-i18n/i18n.git
     version: 0.2.2
 
-  marten: # Overridden
-    path: ../marten
+  marten:
+    git: https://github.com/martenframework/marten.git
     version: 0.6.3
 
   msgpack:
@@ -25,7 +28,7 @@ shards:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
     version: 0.23.0
 
-  web_escape: # Overridden
-    path: ../web-escape
+  web_escape:
+    git: https://github.com/stevegeek/web-escape.git
     version: 0.1.0
 
